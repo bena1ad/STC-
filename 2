@@ -1,0 +1,87 @@
+import os
+
+def get_num_items():
+  num_items = int(input("How many items are you purchasing?: "))
+  return num_items
+
+def get_item_cost():
+  price = float(input("Enter the price: $"))
+  return price
+
+def calculate_sales_tax(price):
+  sales_tax = price * 0.06625
+  return sales_tax
+
+def calculate_total_cost(price, sales_tax):
+  total = price + sales_tax
+  return total
+
+def calc_tax_total(tax_amounts):
+  tax_total = sum(tax_amounts)
+  return tax_total
+
+def calc_receipt_total(prices, tax_total):
+  prices_total = sum(prices)
+  receipt_total = prices_total + tax_total
+  return receipt_total
+
+def print_receipt(num_items, names, prices, tax_amounts, totals):
+  os.system("clear")
+  print("="*20)
+  print("RECEIPT:")
+  print("="*20)
+  print()
+  for i in range(num_items):
+    print(f"Name: {names[i]}")
+    print(f"Price: $ {prices[i]}")
+    print(f"Sales Tax: $ {tax_amounts[i]}")
+    print(f"Total Cost: $ {totals[i]}")
+    print()
+
+def write_receipt(num_items, names, prices, tax_amounts, totals):
+  with open("receipt.txt", "w") as f:
+    print("="*20, file=f)
+    print("RECEIPT:", file=f)
+    print("="*20, file=f)
+    print(file=f)
+    for i in range(num_items):
+      print(f"Name: {names[i]}", file=f)
+      print(f"Price: $ {prices[i]}", file=f)
+      print(f"Sales Tax: $ {tax_amounts[i]}", file=f)
+      print(f"Total Cost: $ {totals[i]}", file=f)
+      print(file=f)
+
+def get_item_name():
+  item_name = input("Enter the name of the item: ")
+  return item_name
+
+def get_items():
+  names = []
+  prices = []
+  tax_amounts = []
+  totals = []
+  
+  num_items = get_num_items()
+
+  for i in range(num_items):
+    name = get_item_name()
+    names.append(name)
+    
+    price = get_item_cost()
+    prices.append(price)
+
+    tax = calculate_sales_tax(price)
+    tax_amounts.append(tax)
+
+    total = calculate_total_cost(price, tax)
+    totals.append(total)
+
+  return num_items, names, prices, tax_amounts, totals
+
+
+
+num_items, names, prices, tax_amounts, totals = get_items()
+tax_total = calc_tax_total(tax_amounts)
+receipt_total = calc_receipt_total(prices, tax_total)
+print_receipt(num_items, names, prices , tax_amounts, totals)
+write_receipt(num_items, names, prices , tax_amounts, totals)
